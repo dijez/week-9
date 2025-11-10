@@ -1,42 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Drum Machine</title>
-  <link rel="stylesheet" href="./index.css" />
+  <link rel="stylesheet" href="./index.css">
 </head>
 <body>
   <div id="drum-machine">
-    <div id="display-section">
-      <h2 id="display">Power Off</h2>
-      <div class="switch">
-        <p>Power</p>
-        <label class="switch-btn">
-          <input type="checkbox" id="power-switch">
-          <span class="slider"></span>
-        </label>
-      </div>
-
-      <div class="switch">
-        <p>Bank</p>
-        <label class="switch-btn">
-          <input type="checkbox" id="bank-switch">
-          <span class="slider"></span>
-        </label>
-      </div>
+    <div class="pad-bank">
+      <button class="drum-pad" data-key="Q">Q
+        <audio src="https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3" id="audio-Q"></audio>
+      </button>
+      <button class="drum-pad" data-key="W">W
+        <audio src="https://s3.amazonaws.com/freecodecamp/drums/Heater-2.mp3" id="audio-W"></audio>
+      </button>
+      <button class="drum-pad" data-key="E">E
+        <audio src="https://s3.amazonaws.com/freecodecamp/drums/Heater-3.mp3" id="audio-E"></audio>
+      </button>
+      <button class="drum-pad" data-key="A">A
+        <audio src="https://s3.amazonaws.com/freecodecamp/drums/Heater-4_1.mp3" id="audio-A"></audio>
+      </button>
+      <button class="drum-pad" data-key="S">S
+        <audio src="https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3" id="audio-S"></audio>
+      </button>
+      <button class="drum-pad" data-key="D">D
+        <audio src="https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3" id="audio-D"></audio>
+      </button>
+      <button class="drum-pad" data-key="Z">Z
+        <audio src="https://s3.amazonaws.com/freecodecamp/drums/Kick_n_Hat.mp3" id="audio-Z"></audio>
+      </button>
+      <button class="drum-pad" data-key="X">X
+        <audio src="https://s3.amazonaws.com/freecodecamp/drums/RP4_KICK_1.mp3" id="audio-X"></audio>
+      </button>
+      <button class="drum-pad" data-key="C">C
+        <audio src="https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3" id="audio-C"></audio>
+      </button>
     </div>
 
-    <div id="pad-container">
-      <div class="drum-pad" id="Q">Q<audio src="https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3" class="clip" id="Q-audio"></audio></div>
-      <div class="drum-pad" id="W">W<audio src="https://s3.amazonaws.com/freecodecamp/drums/Heater-2.mp3" class="clip" id="W-audio"></audio></div>
-      <div class="drum-pad" id="E">E<audio src="https://s3.amazonaws.com/freecodecamp/drums/Heater-3.mp3" class="clip" id="E-audio"></audio></div>
-      <div class="drum-pad" id="A">A<audio src="https://s3.amazonaws.com/freecodecamp/drums/Heater-4_1.mp3" class="clip" id="A-audio"></audio></div>
-      <div class="drum-pad" id="S">S<audio src="https://s3.amazonaws.com/freecodecamp/drums/Heater-6.mp3" class="clip" id="S-audio"></audio></div>
-      <div class="drum-pad" id="D">D<audio src="https://s3.amazonaws.com/freecodecamp/drums/Dsc_Oh.mp3" class="clip" id="D-audio"></audio></div>
-      <div class="drum-pad" id="Z">Z<audio src="https://s3.amazonaws.com/freecodecamp/drums/Kick_n_Hat.mp3" class="clip" id="Z-audio"></audio></div>
-      <div class="drum-pad" id="X">X<audio src="https://s3.amazonaws.com/freecodecamp/drums/RP4_KICK_1.mp3" class="clip" id="X-audio"></audio></div>
-      <div class="drum-pad" id="C">C<audio src="https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3" class="clip" id="C-audio"></audio></div>
+    <div class="controls-container">
+      <div class="control">
+        <p>Power</p>
+        <div class="switch" id="power"></div>
+      </div>
+
+      <div id="display">Press a key</div>
+
+      <input type="range" id="volume" min="0" max="1" step="0.01" value="0.5">
+
+      <div class="control">
+        <p>Bank</p>
+        <div class="switch" id="bank"></div>
+      </div>
     </div>
   </div>
 

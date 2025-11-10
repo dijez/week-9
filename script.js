@@ -1,12 +1,15 @@
-const display = document.getElementById("display");
-const powerSwitch = document.getElementById("power-switch");
-const bankSwitch = document.getElementById("bank-switch");
-const pads = document.querySelectorAll(".drum-pad");
+const pads = document.querySelectorAll('.drum-pad');
+const display = document.getElementById('display');
+const powerSwitch = document.getElementById('power');
+const bankSwitch = document.getElementById('bank');
+const volumeControl = document.getElementById('volume');
 
-let powerOn = false;
-let bank = 1;
+let powerOn = true;
+let currentBank = 1;
+let volume = parseFloat(volumeControl.value);
 
-const bankOne = {
+// Define 2 sets of sounds (Bank 1 & Bank 2)
+const bank1 = {
   Q: "https://s3.amazonaws.com/freecodecamp/drums/Heater-1.mp3",
   W: "https://s3.amazonaws.com/freecodecamp/drums/Heater-2.mp3",
   E: "https://s3.amazonaws.com/freecodecamp/drums/Heater-3.mp3",
@@ -18,7 +21,7 @@ const bankOne = {
   C: "https://s3.amazonaws.com/freecodecamp/drums/Cev_H2.mp3"
 };
 
-const bankTwo = {
+const bank2 = {
   Q: "https://s3.amazonaws.com/freecodecamp/drums/Chord_1.mp3",
   W: "https://s3.amazonaws.com/freecodecamp/drums/Chord_2.mp3",
   E: "https://s3.amazonaws.com/freecodecamp/drums/Chord_3.mp3",
@@ -30,44 +33,54 @@ const bankTwo = {
   C: "https://s3.amazonaws.com/freecodecamp/drums/Brk_Snr.mp3"
 };
 
-// Handle power switch
-powerSwitch.addEventListener("change", () => {
-  powerOn = powerSwitch.checked;
-  display.textContent = powerOn ? "Power On" : "Power Off";
-});
-
-// Handle bank switch
-bankSwitch.addEventListener("change", () => {
-  if (!powerOn) return;
-  bank = bankSwitch.checked ? 2 : 1;
-  display.textContent = bank === 2 ? "Bank 2" : "Bank 1";
-  updateAudioSources();
-});
-
-function updateAudioSources() {
-  const sounds = bank === 1 ? bankOne : bankTwo;
+// Load selected bank
+function loadBank(bank) {
   pads.forEach(pad => {
-    const key = pad.id;
-    const audio = pad.querySelector("audio");
-    audio.src = sounds[key];
+    const key = pad.dataset.key;
+    const audio = document.getElementById(`audio-${key}`);
+    audio.src = bank[key];
   });
 }
 
-// Handle pad click
-pads.forEach(pad => {
-  pad.addEventListener("click", () => playSound(pad.id));
-});
-
-document.addEventListener("keydown", e => {
-  const key = e.key.toUpperCase();
-  if (document.getElementById(key)) playSound(key);
-});
-
+// Play sound
 function playSound(key) {
   if (!powerOn) return;
-  const pad = document.getElementById(key);
-  const audio = pad.querySelector("audio");
+  const audio = document.getElementById(`audio-${key}`);
+  if (!audio) return;
   audio.currentTime = 0;
+  audio.volume = volume;
   audio.play();
-  display.textContent = `Playing ${key}`;
+  display.textContent = `Sound: ${key}`;
+  const pad = document.querySelector(`.drum-pad[data-key="${key}"]`);
+  pad.classList.add('active');
+  setTimeout(() => pad.classList.remove('active'), 150);
 }
+
+// Event listeners
+pads.forEach(pad => pad.addEventListener('click', () => playSound(pad.dataset.key)));
+
+document.addEventListener('keydown', e => {
+  const key = e.key.toUpperCase();
+  if (bank1[key]) playSound(key);
+});
+
+powerSwitch.addEventListener('click', () => {
+  powerOn = !powerOn;
+  powerSwitch.classList.toggle('active', powerOn);
+  display.textContent = powerOn ? 'Power ON' : 'Power OFF';
+});
+
+bankSwitch.addEventListener('click', () => {
+  currentBank = currentBank === 1 ? 2 : 1;
+  bankSwitch.classList.toggle('active', currentBank === 2);
+  loadBank(currentBank === 1 ? bank1 : bank2);
+  display.textContent = `Bank ${currentBank}`;
+});
+
+volumeControl.addEventListener('input', e => {
+  volume = parseFloat(e.target.value);
+  display.textContent = `Volume: ${Math.round(volume * 100)}%`;
+});
+
+// Default load
+loadBank(bank1);
